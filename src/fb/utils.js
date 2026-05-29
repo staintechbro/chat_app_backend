@@ -15,27 +15,46 @@
 //   return token;
 // };
 
+// import jwt from "jsonwebtoken";
+
+// /**
+//  * Generate a JWT token for a user and set it as an HTTP-only cookie on the response.
+//  * @param {string} userId - The ID of the user to encode in the JWT.
+//  * @param {object} res - Express response object to set the cookie.
+//  * @returns {string} - The generated JWT token.
+//  */
+// export const generateToken = (userId, res) => {
+//   const token = jwt.sign(
+//     { userId }, // Payload
+//     process.env.JWT_SECRET, // Secret key from env variables
+//     { expiresIn: "7d" } // Token expiration duration
+//   );
+
+//   // Set token as an HTTP-only cookie
+//   res.cookie("jwt", token, {
+//     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+//     httpOnly: true, // Helps prevent XSS attacks
+//     sameSite: "strict", // Helps prevent CSRF attacks
+//     secure: process.env.NODE_ENV !== "development", // Send cookie over HTTPS only in production
+//   });
+
+//   return token;
+// };
+
 import jwt from "jsonwebtoken";
 
-/**
- * Generate a JWT token for a user and set it as an HTTP-only cookie on the response.
- * @param {string} userId - The ID of the user to encode in the JWT.
- * @param {object} res - Express response object to set the cookie.
- * @returns {string} - The generated JWT token.
- */
 export const generateToken = (userId, res) => {
   const token = jwt.sign(
-    { userId }, // Payload
-    process.env.JWT_SECRET, // Secret key from env variables
-    { expiresIn: "7d" } // Token expiration duration
+    { userId },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
   );
 
-  // Set token as an HTTP-only cookie
   res.cookie("jwt", token, {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-    httpOnly: true, // Helps prevent XSS attacks
-    sameSite: "strict", // Helps prevent CSRF attacks
-    secure: process.env.NODE_ENV !== "development", // Send cookie over HTTPS only in production
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
   });
 
   return token;
