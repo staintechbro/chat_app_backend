@@ -21,13 +21,12 @@ app.use(
   cors({
     origin: [
       process.env.CLIENT_URL,
-      "https://chatappfrontend-11c17rcfg-staintechbro-s-projects.vercel.app"
     ],
     credentials: true,
   })
 );
 
-app.options("*", cors());
+app.options(/.*/, cors());
 
 app.get("/", (req, res) => {
   res.send("Chat backend is running");
